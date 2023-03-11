@@ -24,6 +24,10 @@
 							"        pm.response.to.have.status(200);\r",
 							"})\r",
 							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
 							"// deep acts like contains\r",
 							"    pm.test(\"validate property\",()=> {\r",
 							"        pm.expect(resp).to.have.property(\"Msg\");\r",
@@ -66,7 +70,7 @@
 					}
 				}
 			],
-			"_postman_id": "f0b7ecc4-5410-40bd-9afc-34d320f1261b",
+			"id": "f0b7ecc4-5410-40bd-9afc-34d320f1261b",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
