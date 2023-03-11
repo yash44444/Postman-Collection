@@ -1,0 +1,90 @@
+{
+	"info": {
+		"_postman_id": "de5470eb-b27d-453e-bee9-823f6272393b",
+		"name": "LibraryCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CREATE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b8d381dd-1da5-428a-97fa-5411e76ef81f",
+						"exec": [
+							"// pm.test(\"test case name\", method to write test case())\r",
+							"// using chai assertion - 3 options: Should, Expect, Assert\r",
+							"\r",
+							"// Since response have many attributes, we cannot directly assert the response. we need to capture response in variable\r",
+							"\r",
+							"const resp = pm.response.json();\r",
+							"\r",
+							"    pm.test(\"validate status code is 200\",()=> {\r",
+							"        pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"// deep acts like contains\r",
+							"    pm.test(\"validate property\",()=> {\r",
+							"        pm.expect(resp).to.have.property(\"Msg\");\r",
+							"        pm.expect(resp.Msg).to.deep.eql(\"successfully added\")\r",
+							"})\r",
+							"\r",
+							"    pm.test(\"validate header\",()=> {\r",
+							"        pm.response.to.have.header(\"Content-Type\");  \r",
+							"        pm.expect(response.headers.get(\"Content-Type\")).to.eql(\"application/json;charset=UTF-8\")\r",
+							"    // response.headers returns list. JS uses get method to retrive from list.\r",
+							"})\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "5f849ca4-c47b-4bfc-9ffb-5a2764f44445",
+						"exec": [
+							"\r",
+							"// setting constant RS at global level\r",
+							"const ccode = pm.globals.get(\"companyCode\")   \r",
+							"\r",
+							"// generating random integer\r",
+							"const val = pm.variables.replaceIn('{{$randomInt}}')\r",
+							"\r",
+							"\r",
+							"const isbn = ccode + val\r",
+							"\r",
+							"// setting isbn value at global \r",
+							"pm.globals.set(\"isbn\",isbn)\r",
+							" "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "f0b7ecc4-5410-40bd-9afc-34d320f1261b",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"name\":\"Learn Appium Automation with Java\",\r\n\"isbn\":\"{{isbn}}\",\r\n\"aisle\":\"322\",\r\n\"author\":\"John foe\"\r\n}\r\n \r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{ENDPOINT}}/Library/Addbook.php"
+			},
+			"response": []
+		}
+	]
+}
