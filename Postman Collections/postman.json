@@ -152,6 +152,21 @@
 		},
 		{
 			"name": "DELETE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1cb4f59d-6194-4ad5-b187-aa4296db4aae",
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"id": "19bc6f62-8186-4c30-8eb0-78c488f070f2",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
