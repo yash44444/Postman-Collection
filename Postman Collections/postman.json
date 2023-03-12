@@ -145,7 +145,12 @@
 							"      ]\r",
 							"    }\r",
 							"  ]\r",
-							"}"
+							"}\r",
+							"\r",
+							"\r",
+							"pm.test(\"validate response schema\",()=>{\r",
+							"    pm.response.to.have.jsonSchema(schema)\r",
+							"})"
 						],
 						"type": "text/javascript"
 					}
