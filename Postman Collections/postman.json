@@ -89,6 +89,18 @@
 				"url": "{{ENDPOINT}}/Library/Addbook.php"
 			},
 			"response": []
+		},
+		{
+			"name": "New Request",
+			"id": "2748f8b3-115d-445b-bae5-2d2c0640df50",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
 		}
 	]
 }
