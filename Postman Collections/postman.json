@@ -158,7 +158,8 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": "{{ENDPOINT}}/Library/DeleteBook.php"
 			},
 			"response": []
 		}
