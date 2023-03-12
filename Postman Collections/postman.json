@@ -98,7 +98,23 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "{{ENDPOINT}}/Library/GetBook.php?ID=3389             ",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"Library",
+						"GetBook.php"
+					],
+					"query": [
+						{
+							"key": "ID",
+							"value": "3389             "
+						}
+					]
+				}
 			},
 			"response": []
 		},
