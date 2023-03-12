@@ -108,7 +108,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{ENDPOINT}}/Library/GetBook.php?ID=3389             ",
+					"raw": "{{ENDPOINT}}/Library/GetBook.php?ID={{book_id}}       ",
 					"host": [
 						"{{ENDPOINT}}"
 					],
@@ -119,7 +119,7 @@
 					"query": [
 						{
 							"key": "ID",
-							"value": "3389             "
+							"value": "{{book_id}}       "
 						}
 					]
 				}
