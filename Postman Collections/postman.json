@@ -40,6 +40,10 @@
 							"    // response.headers returns list. JS uses get method to retrive from list.\r",
 							"})\r",
 							"\r",
+							"const bookId = resp.ID\r",
+							"console.log(bookId)\r",
+							"pm.globals.set(\"book_id\",bookId);\r",
+							"\r",
 							"\r",
 							"\r",
 							""
@@ -64,6 +68,10 @@
 							"\r",
 							"// setting isbn value at global \r",
 							"pm.globals.set(\"isbn\",isbn)\r",
+							"\r",
+							"const authorName = pm.variables.replaceIn()\r",
+							"\r",
+							"pm.globals.set(\"author\",)\r",
 							" "
 						],
 						"type": "text/javascript"
