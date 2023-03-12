@@ -61,7 +61,7 @@
 							"const ccode = pm.globals.get(\"companyCode\")   \r",
 							"const val = pm.variables.replaceIn('{{$randomInt}}')\r",
 							"\r",
-							"const isbn = ccode + va\r",
+							"const isbn = ccode + val\r",
 							"pm.globals.set(\"isbn\",isbn)\r",
 							"\r",
 							"pm.globals.set(\"author\",\"yashu verma\") \r",
