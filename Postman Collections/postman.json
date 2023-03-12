@@ -63,6 +63,8 @@
 							"// generating random integer\r",
 							"const val = pm.variables.replaceIn('{{$randomInt}}')\r",
 							"\r",
+							"pm.globals.set(\"author\",\"yashu verma\") \r",
+							"\r",
 							"\r",
 							"const isbn = ccode + val\r",
 							"\r",
