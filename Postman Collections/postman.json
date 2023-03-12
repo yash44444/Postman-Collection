@@ -100,6 +100,30 @@
 		},
 		{
 			"name": "GET",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d8e84d4c-59ec-4e9e-ba20-e5f1c6c62b85",
+						"exec": [
+							"\r",
+							"const resp = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Body matches string\", () => {\r",
+							"    pm.expect(pm.response.text()).to.deep.include(\"Appium\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"id": "2748f8b3-115d-445b-bae5-2d2c0640df50",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
