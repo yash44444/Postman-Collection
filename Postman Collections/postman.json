@@ -91,7 +91,7 @@
 			"response": []
 		},
 		{
-			"name": "New Request",
+			"name": "GET",
 			"id": "2748f8b3-115d-445b-bae5-2d2c0640df50",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
