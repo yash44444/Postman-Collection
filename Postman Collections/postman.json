@@ -217,7 +217,24 @@
 							"\r",
 							"pm.test(\"Body matches string\", function () {\r",
 							"    pm.expect(pm.response.text()).to.include(\"book is successfully deleted\");\r",
-							"});"
+							"});\r",
+							"\r",
+							"const schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"msg\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"msg\"\r",
+							"  ]\r",
+							"}\r",
+							"\r",
+							"pm.test(\"verify response schema\", ()=>{\r",
+							"    pm.response.to.have.jsonSchema(schema)\r",
+							"})"
 						],
 						"type": "text/javascript"
 					}
