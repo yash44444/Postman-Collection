@@ -114,7 +114,9 @@
 							"    pm.expect(pm.response.text()).to.deep.include(\"Appium\");\r",
 							"});\r",
 							"\r",
-							""
+							"pm.test(\"validate author\", ()=>{\r",
+							"    pm.expect(resp[0].author).to.eql(pm.globals.get(\"author\"))\r",
+							"})"
 						],
 						"type": "text/javascript"
 					}
