@@ -36,7 +36,7 @@
 							"// deep acts like contains\r",
 							"    pm.test(\"validate property\",()=> {\r",
 							"        try{\r",
-							"             pm.expect(resp).to.have.property(\"Msg\");\r",
+							"            pm.expect(resp).to.have.property(\"Msg\");\r",
 							"            pm.expect(resp.Msg).to.deep.eql(\"successfully added\")\r",
 							"        }\r",
 							"        catch(err){\r",
