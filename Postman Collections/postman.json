@@ -35,7 +35,7 @@
 							"\r",
 							"var req = JSON.parse(pm.request.body.raw)\r",
 							"const aisle_val = req.aisle;\r",
-							"const isbn_val = pm.collectionVariables.get(\"isbn\")\r",
+							"const isbn_val = pm.globals.get(\"isbn\")\r",
 							"const expectedId = isbn_val + aisle_val\r",
 							"console.log(expectedId) \r",
 							"\r",
