@@ -40,7 +40,7 @@
 							"            pm.expect(resp.Msg).to.deep.eql(\"successfully added\")\r",
 							"        }\r",
 							"        catch(err){\r",
-							"             if(resp.msg.includes(\"exists\"))\r",
+							"             if(resp.Msg.includes(\"exists\"))\r",
 							"             {\r",
 							"                cleanupScript()\r",
 							"             }\r",
