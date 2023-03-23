@@ -24,6 +24,10 @@
 							"        pm.response.to.have.status(200);\r",
 							"})\r",
 							"\r",
+							"pm.test(\"Response time is less than 200ms\", () => {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+							"});\r",
+							"\r",
 							"// deep acts like contains\r",
 							"    pm.test(\"validate property\",()=> {\r",
 							"        pm.expect(resp).to.have.property(\"Msg\");\r",
@@ -32,8 +36,32 @@
 							"\r",
 							"    pm.test(\"validate header\",()=> {\r",
 							"        pm.response.to.have.header(\"Content-Type\");  \r",
-							"        pm.expect(response.headers.get(\"Content-Type\")).to.eql(\"application/json;charset=UTF-8\")\r",
+							"        pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json;charset=UTF-8\")\r",
 							"    // response.headers returns list. JS uses get method to retrive from list.\r",
+							"})\r",
+							"\r",
+							"const bookId = resp.ID\r",
+							"console.log(bookId)\r",
+							"pm.globals.set(\"book_id\",bookId);\r",
+							"\r",
+							"const schema = {\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"Msg\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"ID\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"Msg\",\r",
+							"    \"ID\"\r",
+							"  ]\r",
+							"}\r",
+							"\r",
+							"pm.test(\"verify response schema\", ()=>{\r",
+							"    pm.response.to.have.jsonSchema(schema)\r",
 							"})\r",
 							"\r",
 							"\r",
@@ -48,17 +76,17 @@
 					"script": {
 						"exec": [
 							"\r",
-							"// setting constant RS at global level\r",
-							"const ccode = pm.globals.get(\"companyCode\")   \r",
 							"\r",
-							"// generating random integer\r",
+							"const ccode = pm.globals.get(\"companyCode\")   \r",
 							"const val = pm.variables.replaceIn('{{$randomInt}}')\r",
 							"\r",
-							"\r",
 							"const isbn = ccode + val\r",
-							"\r",
-							"// setting isbn value at global \r",
 							"pm.globals.set(\"isbn\",isbn)\r",
+							"\r",
+							"pm.globals.set(\"author\",\"yashu verma\") \r",
+							"\r",
+							"\r",
+							"\r",
 							" "
 						],
 						"type": "text/javascript"
@@ -70,7 +98,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\"name\":\"Learn Appium Automation with Java\",\r\n\"isbn\":\"{{isbn}}\",\r\n\"aisle\":\"322\",\r\n\"author\":\"John foe\"\r\n}\r\n \r\n",
+					"raw": "{\r\n\"name\":\"Learn Appium Automation with Java\",\r\n\"isbn\":\"{{isbn}}\",\r\n\"aisle\":\"322\",\r\n\"author\":\"{{author}}\"\r\n}\r\n \r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -85,6 +113,150 @@
 					"path": [
 						"Library",
 						"Addbook.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"const resp = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Body matches string\", () => {\r",
+							"    pm.expect(pm.response.text()).to.deep.include(\"Appium\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"validate author\", ()=>{\r",
+							"    pm.expect(resp[0].author).to.eql(pm.globals.get(\"author\"))\r",
+							"})\r",
+							"\r",
+							"const schema = {\r",
+							"  \"type\": \"array\",\r",
+							"  \"items\": [\r",
+							"    {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"book_name\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"isbn\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"aisle\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"author\": {\r",
+							"          \"type\": \"string\"\r",
+							"        }\r",
+							"      },\r",
+							"      \"required\": [\r",
+							"        \"book_name\",\r",
+							"        \"isbn\",\r",
+							"        \"aisle\",\r",
+							"        \"author\"\r",
+							"      ]\r",
+							"    }\r",
+							"  ]\r",
+							"}\r",
+							"\r",
+							"\r",
+							"pm.test(\"validate response schema\",()=>{\r",
+							"    pm.response.to.have.jsonSchema(schema)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ENDPOINT}}/Library/GetBook.php?ID={{book_id}}       ",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"Library",
+						"GetBook.php"
+					],
+					"query": [
+						{
+							"key": "ID",
+							"value": "{{book_id}}       "
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"book is successfully deleted\");\r",
+							"});\r",
+							"\r",
+							"const schema = {\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"msg\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"msg\"\r",
+							"  ]\r",
+							"}\r",
+							"\r",
+							"pm.test(\"verify response schema\", ()=>{\r",
+							"    pm.response.to.have.jsonSchema(schema)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ID\" : \"{{book_id}}\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ENDPOINT}}/Library/DeleteBook.php",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"Library",
+						"DeleteBook.php"
 					]
 				}
 			},
