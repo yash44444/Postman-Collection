@@ -1,0 +1,284 @@
+{
+	"info": {
+		"_postman_id": "de5470eb-b27d-453e-bee9-823f6272393b",
+		"name": "LibraryCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CREATE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b8d381dd-1da5-428a-97fa-5411e76ef81f",
+						"exec": [
+							"// pm.test(\"test case name\", method to write test case())\r",
+							"// using chai assertion - 3 options: Should, Expect, Assert\r",
+							"\r",
+							"// Since response have many attributes, we cannot directly assert the response. we need to capture response in variable\r",
+							"\r",
+							"const resp = pm.response.json();\r",
+							"\r",
+							"    pm.test(\"validate status code is 200\",()=> {\r",
+							"        pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", () => {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+							"});\r",
+							"\r",
+							"function cleanupScript()\r",
+							"{\r",
+							"    postman.setNextRequest(DELETE);\r",
+							"}\r",
+							"\r",
+							"var req = JSON.parse(pm.request.body.raw)\r",
+							"const aisle_val = req.aisle;\r",
+							"const isbn_val = pm.globals.get(\"isbn\")\r",
+							"const expectedId = isbn_val + aisle_val\r",
+							"console.log(expectedId) \r",
+							"\r",
+							"// deep acts like contains\r",
+							"    pm.test(\"validate property\",()=> {\r",
+							"        try{\r",
+							"            pm.expect(resp).to.have.property(\"Msg\");\r",
+							"            pm.expect(resp.Msg).to.deep.eql(\"successfully added\")\r",
+							"        }\r",
+							"        catch(err){\r",
+							"             if(resp.Msg.includes(\"exists\"))\r",
+							"             {\r",
+							"                cleanupScript()\r",
+							"             }\r",
+							"            \r",
+							"        }\r",
+							"       \r",
+							"})\r",
+							"\r",
+							"    pm.test(\"validate header\",()=> {\r",
+							"        pm.response.to.have.header(\"Content-Type\");  \r",
+							"        pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json;charset=UTF-8\")\r",
+							"    // response.headers returns list. JS uses get method to retrive from list.\r",
+							"})\r",
+							"\r",
+							"const bookId = resp.ID\r",
+							"console.log(bookId)\r",
+							"pm.globals.set(\"book_id\",bookId);\r",
+							"\r",
+							"const schema = {\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"Msg\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"ID\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"Msg\",\r",
+							"    \"ID\"\r",
+							"  ]\r",
+							"}\r",
+							"\r",
+							"pm.test(\"verify response schema\", ()=>{\r",
+							"    pm.response.to.have.jsonSchema(schema)\r",
+							"})\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "5f849ca4-c47b-4bfc-9ffb-5a2764f44445",
+						"exec": [
+							"\r",
+							"\r",
+							"const ccode = pm.globals.get(\"companyCode\")   \r",
+							"const val = pm.variables.replaceIn('{{$randomInt}}')\r",
+							"\r",
+							"const isbn = ccode + val\r",
+							"pm.globals.set(\"isbn\",isbn)\r",
+							"\r",
+							"pm.globals.set(\"author\",\"yashu verma\") \r",
+							"\r",
+							"\r",
+							"\r",
+							" "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "f0b7ecc4-5410-40bd-9afc-34d320f1261b",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"name\":\"Learn Appium Automation with Java\",\r\n\"isbn\":\"{{isbn}}\",\r\n\"aisle\":\"322\",\r\n\"author\":\"{{author}}\"\r\n}\r\n \r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{ENDPOINT}}/Library/Addbook.php"
+			},
+			"response": []
+		},
+		{
+			"name": "GET",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d8e84d4c-59ec-4e9e-ba20-e5f1c6c62b85",
+						"exec": [
+							"\r",
+							"const resp = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Body matches string\", () => {\r",
+							"    pm.expect(pm.response.text()).to.deep.include(\"Appium\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"validate author\", ()=>{\r",
+							"    pm.expect(resp[0].author).to.eql(pm.globals.get(\"author\"))\r",
+							"})\r",
+							"\r",
+							"const schema = {\r",
+							"  \"type\": \"array\",\r",
+							"  \"items\": [\r",
+							"    {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"book_name\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"isbn\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"aisle\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"author\": {\r",
+							"          \"type\": \"string\"\r",
+							"        }\r",
+							"      },\r",
+							"      \"required\": [\r",
+							"        \"book_name\",\r",
+							"        \"isbn\",\r",
+							"        \"aisle\",\r",
+							"        \"author\"\r",
+							"      ]\r",
+							"    }\r",
+							"  ]\r",
+							"}\r",
+							"\r",
+							"\r",
+							"pm.test(\"validate response schema\",()=>{\r",
+							"    pm.response.to.have.jsonSchema(schema)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "2748f8b3-115d-445b-bae5-2d2c0640df50",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ENDPOINT}}/Library/GetBook.php?ID={{book_id}}       ",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"Library",
+						"GetBook.php"
+					],
+					"query": [
+						{
+							"key": "ID",
+							"value": "{{book_id}}       "
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1cb4f59d-6194-4ad5-b187-aa4296db4aae",
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"book is successfully deleted\");\r",
+							"});\r",
+							"\r",
+							"const schema = {\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"msg\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"msg\"\r",
+							"  ]\r",
+							"}\r",
+							"\r",
+							"pm.test(\"verify response schema\", ()=>{\r",
+							"    pm.response.to.have.jsonSchema(schema)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "19bc6f62-8186-4c30-8eb0-78c488f070f2",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ID\" : \"{{book_id}}\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{ENDPOINT}}/Library/DeleteBook.php"
+			},
+			"response": []
+		}
+	]
+}
